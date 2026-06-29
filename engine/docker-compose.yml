@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  # 1. NATS JetStream (The Event Bus)
+  nats:
+    image: nats:latest
+    command: "-js -m 8222" # Enables JetStream and monitoring
+    ports:
+      - "4222:4222" # Client port
+      - "8222:8222" # Monitoring port
+
+  # 2. YugabyteDB (The Distributed SQL Database)
+  yugabytedb:
+    image: yugabytedb/yugabyte:latest
+    command: bin/yugabyted start --daemon=false
+    ports:
+      - "5433:5433" # PostgreSQL compatible port (YSQL)
+      - "7000:7000" # Master UI
+      - "9000:9000" # TServer UI
